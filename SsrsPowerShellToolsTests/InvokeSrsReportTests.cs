@@ -18,7 +18,7 @@ namespace SsrsPowerShellToolsTests
                 //Credential = System.Net.CredentialCache.DefaultNetworkCredentials,
                 Format = "PDF",
                 //Parameters = {{"Year", "2013"}},
-                Report = "Public/State Report",
+                Report = "/Public/State Report",
                 ReportServerUrl = "http://edw.vermont.gov/REPORTSERVER/ReportService2005.asmx"
             };
 

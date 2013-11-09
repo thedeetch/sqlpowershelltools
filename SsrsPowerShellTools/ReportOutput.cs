@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using ReportExecution2005;
+using Microsoft.SqlServer.ReportingServices;
 
 namespace SsrsPowerShellTools
 {
     public class ReportOutput
     {
-        /// <summary>
-        /// An object containing information about the report server.
-        /// </summary>
-        public ServerInfoHeader ServerInfoHeader { get; set; }
-
         /// <summary>
         /// An object containing information for the executed report.
         /// </summary>

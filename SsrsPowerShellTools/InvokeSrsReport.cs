@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Management.Automation;
 using System.Net;
-using ReportExecution2005;
+using Microsoft.SqlServer.ReportingServices;
 using System.ServiceModel.Channels;
 using System.ServiceModel;
 using System.Security.Principal;
@@ -22,7 +22,7 @@ namespace SsrsPowerShellTools
 
         #region Private Properties
 
-        ReportExecutionServiceSoapClient _client;
+        ReportExecutionService _client;
 
         string _deviceInfo = "<DeviceInfo></DeviceInfo>";
         string _historyId = "";
@@ -109,10 +109,7 @@ namespace SsrsPowerShellTools
         {
             base.ProcessRecord();
 
-            ServerInfoHeader serverInfoHeader;
             ExecutionInfo executionInfo;
-            ExecutionHeader executionHeader = new ExecutionHeader();
-            TrustedUserHeader trustedUserHeader = new TrustedUserHeader();
 
             List<ParameterValue> parameterValues = new List<ParameterValue>();
 
@@ -120,13 +117,13 @@ namespace SsrsPowerShellTools
             string extension;
             string mimeType;
             string encoding;
-            Warning[] warnings;
+            Warning[] warnings = {};
             string[] streamIds;
 
             ReportOutput output;
 
             // Load the report
-            executionHeader = _client.LoadReport(trustedUserHeader, this.Report, this.HistoryId, out serverInfoHeader, out executionInfo);
+            executionInfo = _client.LoadReport( this.Report, this.HistoryId);
 
             // Map the parameters
             foreach (KeyValuePair<string, string> parameter in this.Parameters)
@@ -140,10 +137,10 @@ namespace SsrsPowerShellTools
 
             // Set the execution parameters
             if (parameterValues.Count > 0)
-                _client.SetExecutionParameters(executionHeader, trustedUserHeader, parameterValues.ToArray(), null, out executionInfo);
+                executionInfo = _client.SetExecutionParameters(parameterValues.ToArray(), null);
 
             // Render the report
-            _client.Render(executionHeader, trustedUserHeader, this.Format, this.DeviceInfo, out result, out extension, out mimeType, out encoding, out warnings, out streamIds);
+            result = _client.Render(this.Format, this.DeviceInfo, out extension, out mimeType, out encoding, out warnings, out streamIds);
 
             // Write out any warnings we received
             foreach (Warning warning in warnings)
@@ -154,7 +151,6 @@ namespace SsrsPowerShellTools
             // Build output object
             output = new ReportOutput()
             {
-                ServerInfoHeader = serverInfoHeader,
                 ExecutionInfo = executionInfo,
                 Result = result,
                 Extension = extension,
@@ -179,13 +175,13 @@ namespace SsrsPowerShellTools
             Binding binding = new WSHttpBinding();
             EndpointAddress endpoint;
             endpoint = new EndpointAddress(this.ReportServerUrl);
-            _client = new ReportExecutionServiceSoapClient(binding, endpoint);
-
+            _client = new ReportExecutionService(this.ReportServerUrl);
+            
             // If we have a credential, pass it. Otherwise, assume we will be impersonating.
             if (this.Credential != null)
-                _client.ClientCredentials.Windows.ClientCredential = this.Credential;
+                _client.Credentials = this.Credential;
             else
-                _client.ClientCredentials.Windows.AllowedImpersonationLevel = TokenImpersonationLevel.Impersonation;
+                _client.Credentials = CredentialCache.DefaultNetworkCredentials;
         }
 
         /// <summary>
@@ -195,7 +191,7 @@ namespace SsrsPowerShellTools
         {
             base.EndProcessing();
 
-            _client.Close();
+            _client.Dispose();
         }
 
         /// <summary>
