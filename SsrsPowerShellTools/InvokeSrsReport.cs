@@ -10,7 +10,7 @@ namespace SsrsPowerShellTools
     /// <summary>
     /// Used to run SSRS reports
     /// </summary>
-    [Cmdlet(VerbsLifecycle.Invoke, "Invoke-SrsReport")]
+    [Cmdlet(VerbsLifecycle.Invoke, "SrsReport")]
     public class InvokeSrsReport : Cmdlet
     {
         public InvokeSrsReport()
@@ -129,7 +129,7 @@ namespace SsrsPowerShellTools
             result = _client.Render(this.Format, this.DeviceInfo, out extension, out mimeType, out encoding, out warnings, out streamIds);
 
             // Write out any warnings we received
-            foreach (Warning warning in warnings)
+            foreach (Warning warning in warnings ?? new Warning[0])
             {
                 WriteWarning(string.Format("{0} [Code: {1}, Severity: {2}, ObjectName: {3}, ObjectType: {4}]", warning.Message, warning.Code, warning.Severity, warning.ObjectName, warning.ObjectType));
             }
