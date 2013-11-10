@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Management.Automation;
 using System.Net;
 using Microsoft.SqlServer.ReportingServices;
-using System.ServiceModel.Channels;
-using System.ServiceModel;
 using System.Security.Principal;
 
 namespace SsrsPowerShellTools
@@ -18,15 +16,15 @@ namespace SsrsPowerShellTools
         public InvokeSrsReport()
             : base()
         {
+            this.Parameters = new Dictionary<string, string>();
+            this.DeviceInfo = "<DeviceInfo></DeviceInfo>";
+            this.Format = "PDF";
+            this.Credential = System.Net.CredentialCache.DefaultNetworkCredentials;
         }
 
         #region Private Properties
 
         ReportExecutionService _client;
-
-        string _deviceInfo = "<DeviceInfo></DeviceInfo>";
-        string _historyId = "";
-        string _format = "PDF";
 
         #endregion Private Properties
 
@@ -56,11 +54,7 @@ namespace SsrsPowerShellTools
             HelpMessage = "The format in which to render the report. This argument maps to a rendering extension. Supported extensions include XML, NULL, CSV, IMAGE, PDF, HTML4.0, HTML3.2, MHTML, EXCEL, and Word. A list of supported extensions may be obtained by calling the ListRenderingExtensions method.")]
         [ValidateNotNullOrEmpty]
         [PSDefaultValue(Help = "", Value = "PDF")]
-        public string Format
-        {
-            get { return _format; }
-            set { _format = value; }
-        }
+        public string Format { get; set; }
 
         /// <summary>
         /// The parameters for the report run.
@@ -75,29 +69,21 @@ namespace SsrsPowerShellTools
         /// </summary>
         [Parameter(HelpMessage = "An XML string that contains the device-specific content that is required by the rendering extension specified in the Format parameter. DeviceInfo settings must be passed as internal elements of a DeviceInfo XML element. For more information about device information settings for specific output formats, see Passing Device Information Settings to Rendering Extensions.")]
         [ValidateNotNullOrEmpty]
-        public string DeviceInfo
-        {
-            get { return _deviceInfo; }
-            set { _deviceInfo = value; }
-        }
+        public string DeviceInfo { get; set; }
 
         /// <summary>
         /// The history ID of the snapshot.
         /// </summary>
         [Parameter(HelpMessage = "The history ID of the snapshot.")]
         [ValidateNotNullOrEmpty]
-        public string HistoryId
-        {
-            get { return _historyId; }
-            set { _historyId = value; }
-        }
+        public string HistoryId { get; set; }
 
         /// <summary>
         /// The credentials to use when rendering the report.
         /// </summary>
         [Parameter(HelpMessage = "The credentials to use when rendering the report.")]
         [ValidateNotNullOrEmpty]
-        public NetworkCredential Credential { get; set; }
+        public ICredentials Credential { get; set; }
 
         #endregion Public Properties
 
@@ -123,7 +109,7 @@ namespace SsrsPowerShellTools
             ReportOutput output;
 
             // Load the report
-            executionInfo = _client.LoadReport( this.Report, this.HistoryId);
+            executionInfo = _client.LoadReport(this.Report, this.HistoryId);
 
             // Map the parameters
             foreach (KeyValuePair<string, string> parameter in this.Parameters)
@@ -171,17 +157,9 @@ namespace SsrsPowerShellTools
         {
             base.BeginProcessing();
 
-            // Build binding, endpoint, and client
-            Binding binding = new WSHttpBinding();
-            EndpointAddress endpoint;
-            endpoint = new EndpointAddress(this.ReportServerUrl);
+            // Build client
             _client = new ReportExecutionService(this.ReportServerUrl);
-            
-            // If we have a credential, pass it. Otherwise, assume we will be impersonating.
-            if (this.Credential != null)
-                _client.Credentials = this.Credential;
-            else
-                _client.Credentials = CredentialCache.DefaultNetworkCredentials;
+            _client.Credentials = this.Credential;
         }
 
         /// <summary>
