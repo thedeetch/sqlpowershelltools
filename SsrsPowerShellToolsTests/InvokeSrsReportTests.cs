@@ -5,8 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.QualityTools.Testing.Fakes;
 using SsrsPowerShellTools;
 
-
-namespace SsrsPowerShellToolsTests
+namespace SsrsPowerShellTools.Tests
 {
     [TestClass]
     public class InvokeSrsReportTests
@@ -14,23 +13,13 @@ namespace SsrsPowerShellToolsTests
         [TestMethod]
         public void ProcessRecordTest()
         {
-            //using (ShimsContext.Create())
-            //{
-            //Microsoft.SqlServer.ReportingServices.Fakes.ShimReportExecutionService.AllInstances.RenderStringStringStringOutStringOutStringOutWarningArrayOutStringArrayOut =
-            //    (format, deviceInfo, out extension, out mimeType, out encoding, out warnings, out streamIds, out result) => 
-            //    {
-
-
-            //    };
-            // }
             IEnumerator result;
             ReportOutput actual;
-
 
             InvokeSrsReport target = new InvokeSrsReport()
             {
                 Format = "PDF",
-                Parameters = new Dictionary<string, string> 
+                Parameters = new Hashtable 
                     { 
                         { "schoolyear", "2010-2011" } ,
                         { "testname", "NAEP Math Grade 4"}, // 1
@@ -38,7 +27,7 @@ namespace SsrsPowerShellToolsTests
                         { "aggroup", "12"}
                     },
                 Report = "/Public/NAEP Report",
-                ReportServerUrl = "http://edw.vermont.gov/REPORTSERVER/ReportExecution2005.asmx"
+                ReportServerUrl = "http://contoso.com/REPORTSERVER/ReportExecution2005.asmx"
             };
 
             result = target.Invoke().GetEnumerator();

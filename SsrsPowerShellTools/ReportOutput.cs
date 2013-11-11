@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.SqlServer.ReportingServices;
 
 namespace SsrsPowerShellTools
 {
