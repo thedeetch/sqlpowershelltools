@@ -1,0 +1,10 @@
+D:\Users\Nicholas\Documents\GitHub\ssrspowershelltools\SsrsPowerShellToolsTests\Fakes\SsrsPowerShellTools.fakes : warning : Cannot generate stub for ExtensionTypeEnum: type is a value type.
+D:\Users\Nicholas\Documents\GitHub\ssrspowershelltools\SsrsPowerShellToolsTests\Fakes\SsrsPowerShellTools.fakes : warning : Cannot generate stub for ParameterTypeEnum: type is a value type.
+D:\Users\Nicholas\Documents\GitHub\ssrspowershelltools\SsrsPowerShellToolsTests\Fakes\SsrsPowerShellTools.fakes : warning : Cannot generate stub for ParameterStateEnum: type is a value type.
+D:\Users\Nicholas\Documents\GitHub\ssrspowershelltools\SsrsPowerShellToolsTests\Fakes\SsrsPowerShellTools.fakes : warning : Cannot generate stub for SortDirectionEnum: type is a value type.
+D:\Users\Nicholas\Documents\GitHub\ssrspowershelltools\SsrsPowerShellToolsTests\Fakes\SsrsPowerShellTools.fakes : warning : Cannot generate shim for ReportExecutionServiceSoap: type is an interface.
+D:\Users\Nicholas\Documents\GitHub\ssrspowershelltools\SsrsPowerShellToolsTests\Fakes\SsrsPowerShellTools.fakes : warning : Cannot generate shim for ExtensionTypeEnum: type is an enum.
+D:\Users\Nicholas\Documents\GitHub\ssrspowershelltools\SsrsPowerShellToolsTests\Fakes\SsrsPowerShellTools.fakes : warning : Cannot generate shim for ParameterTypeEnum: type is an enum.
+D:\Users\Nicholas\Documents\GitHub\ssrspowershelltools\SsrsPowerShellToolsTests\Fakes\SsrsPowerShellTools.fakes : warning : Cannot generate shim for ParameterStateEnum: type is an enum.
+D:\Users\Nicholas\Documents\GitHub\ssrspowershelltools\SsrsPowerShellToolsTests\Fakes\SsrsPowerShellTools.fakes : warning : Cannot generate shim for SortDirectionEnum: type is an enum.
+D:\Users\Nicholas\Documents\GitHub\ssrspowershelltools\SsrsPowerShellToolsTests\Fakes\SsrsPowerShellTools.fakes : warning : Cannot generate shim for ReportExecutionServiceSoapChannel: type is an interface.
