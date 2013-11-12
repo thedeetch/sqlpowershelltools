@@ -1,4 +1,4 @@
-PowerShell Tools for SSRS
+PowerShell Tools for SQL Server
 =========
 PowerShell cmdlets to make interacting with SQL Server Reporting Services simpler.
 
@@ -23,6 +23,12 @@ Invoke-SrsReport
 ---------
 ```PowerShell
 Invoke-SrsReport "http://myserver/ReportServer/ReportExecution2005.asmx" "/MyFolder/MyReport" "PDF" @{"Parameter1"="Value1", "Parameter2"="Value2"} 
+```
+
+Invoke-SqlCmd2
+---------
+```PowerShell
+Invoke-SqlCmd2 -Query "SELECT * FROM myschema.mytable"
 ```
 
 License
